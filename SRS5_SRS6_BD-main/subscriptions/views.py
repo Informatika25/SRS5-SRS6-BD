@@ -136,3 +136,6 @@ def dashboard(request):
         'active_count': active_count,
         'category_stats': category_stats,
     })
+
+def subscription_management(request):
+    return render(request, 'subscriptions/management.html')

@@ -1,0 +1,49 @@
+from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
+from rest_framework.exceptions import ValidationError
+
+from .models import Category, Subscription
+from .serializers import CategorySerializer, SubscriptionSerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all().order_by('name')
+    serializer_class = CategorySerializer
+    permission_classes = [IsAdminUser]
+
+
+class SubscriptionViewSet(viewsets.ModelViewSet):
+    serializer_class = SubscriptionSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        queryset = Subscription.objects.select_related('category').all()
+
+        # Фильтр по названию подписки
+        search = self.request.query_params.get('search')
+        if search:
+            queryset = queryset.filter(name__icontains=search)
+
+        # Фильтр по категории
+        category = self.request.query_params.get('category')
+        if category:
+            if not category.isdigit():
+                raise ValidationError({
+                    'category': 'Укажите корректный ID категории.'
+                })
+            queryset = queryset.filter(category_id=category)
+
+        # Фильтр по максимальной цене
+        max_price = self.request.query_params.get('max_price')
+        if max_price:
+            try:
+                max_price = float(max_price)
+                if max_price < 0:
+                    raise ValueError
+            except ValueError:
+                raise ValidationError({
+                    'max_price': 'Укажите неотрицательное число.'
+                })
+            queryset = queryset.filter(price__lte=max_price)
+
+        return queryset.order_by('name')

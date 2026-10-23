@@ -70,5 +70,3 @@ class UserSubscription(models.Model):
     def __str__(self):
         return f'{self.user} — {self.subscription}'
 
-    def get_status_display(self):
-        pass
