@@ -1,0 +1,101 @@
+/* Общие стили */
+body {
+    background-color: #f5f7fb;
+}
+
+.page-wrapper {
+    min-height: 100vh;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    height: 100%;
+}
+
+.subscription-card {
+    transition: box-shadow 0.2s ease;
+}
+
+.subscription-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.brand-logo {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* Светлая тема */
+html[data-bs-theme="light"] body {
+    background-color: #f5f7fb;
+    color: #212529;
+}
+
+/* Тёмная тема */
+html[data-bs-theme="dark"],
+html[data-bs-theme="dark"] body,
+html[data-bs-theme="dark"] .page,
+html[data-bs-theme="dark"] .page-wrapper,
+html[data-bs-theme="dark"] .page-body {
+    background-color: #18191c !important;
+    color: #f1f3f5;
+}
+html[data-bs-theme="dark"] h1,
+html[data-bs-theme="dark"] h2,
+html[data-bs-theme="dark"] .page-title,
+html[data-bs-theme="dark"] .card-title {
+    color: #f1f3f5 !important;
+}
+
+html[data-bs-theme="dark"] .navbar {
+    background-color: #252629 !important;
+    color: #f1f3f5;
+}
+
+
+/* Адаптивная шапка */
+#currency-select {
+    width: 110px;
+    min-width: 0;
+}
+
+.navbar-actions {
+    flex-wrap: wrap;
+}
+
+@media (max-width: 767.98px) {
+    .navbar .container-xl {
+        flex-wrap: wrap;
+    }
+
+    .navbar-brand {
+        margin-right: auto;
+    }
+
+    #main-navbar {
+        flex-basis: 100%;
+        width: 100%;
+        padding-top: 12px;
+    }
+
+    #main-navbar .navbar-nav {
+        align-items: stretch !important;
+        width: 100%;
+    }
+
+    #main-navbar .nav-link {
+        padding: 10px 0;
+    }
+
+    .navbar-actions {
+        margin: 8px 0 4px;
+        justify-content: flex-start;
+    }
+
+    #currency-select {
+        width: 110px;
+    }
+}

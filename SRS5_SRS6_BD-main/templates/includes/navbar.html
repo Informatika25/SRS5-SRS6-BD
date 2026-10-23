@@ -1,0 +1,44 @@
+
+<header class="navbar navbar-expand-md d-print-none">
+    <div class="container-xl">
+        <a class="navbar-brand brand-logo" href="/">SubTrack</a>
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#main-navbar"
+            aria-controls="main-navbar"
+            aria-expanded="false"
+            aria-label="Открыть меню">
+            <i class="ti ti-menu-2"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="main-navbar">
+            <div class="navbar-nav ms-auto align-items-md-center">
+                <a class="nav-link" href="/">Главная</a>
+                <a class="nav-link" href="/catalog/">Каталог</a>
+                <a class="nav-link" href="/my-subscriptions/">Мои подписки</a>
+                <a class="nav-link" href="/dashboard/">Аналитика</a>
+
+                <div class="navbar-actions d-flex align-items-center gap-2 ms-md-2">
+                    <button
+                        type="button"
+                        class="btn btn-outline-primary btn-sm"
+                        id="theme-toggle">
+                        <i class="ti ti-moon"></i> Тема
+                    </button>
+
+                    <select
+                        id="currency-select"
+                        class="form-select form-select-sm"
+                        aria-label="Выбор валюты">
+                        <option value="RUB">₽ RUB</option>
+                        <option value="USD">$ USD</option>
+                        <option value="EUR">€ EUR</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

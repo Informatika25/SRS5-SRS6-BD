@@ -1,0 +1,177 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Каталог подписок — SubTrack{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Каталог подписок</h1>
+    <p class="text-secondary">
+        Выбирай сервисы и изучай стоимость подписок.
+    </p>
+</div>
+<div class="mb-3">
+    <input
+        type="search"
+        id="catalog-search"
+        class="form-control"
+        placeholder="Поиск по названию, описанию или категории..."
+        aria-label="Поиск подписок"
+    >
+    <div class="form-hint mt-1">
+        Введите название сервиса или категорию.
+    </div>
+</div>
+
+<div id="catalog-message" class="alert d-none" role="status"></div>
+
+<div id="catalog-list" class="row row-cards">
+    {% for subscription in subscriptions %}
+    <div
+    class="col-12 col-md-6 col-lg-4 catalog-item"
+    data-search="{{ subscription.name }} {{ subscription.description|default:'' }} {{ subscription.category.name }}">
+        <div class="card subscription-card">
+            <div class="card-body">
+
+                <div class="d-flex align-items-center mb-3">
+                    {% with color=subscription.category.color %}
+                        <span class="badge
+                            {% if color == 'blue' %}bg-{{ color }}-lt
+                            {% elif color == 'green' %}bg-green-lt
+                            {% elif color == 'purple' %}bg-purple-lt
+                            {% elif color == 'teal' %}bg-teal-lt
+                            {% elif color == 'orange' %}bg-orange-lt
+                            {% elif color == 'pink' %}bg-pink-lt
+                            {% else %}bg-secondary-lt
+                            {% endif %}">
+
+                            <i class="{{ subscription.category.icon }} me-1"></i>
+                            {{ subscription.category.name }}
+                        </span>
+                    {% endwith %}
+                </div>
+
+
+                <h2 class="card-title">
+                    {{ subscription.name }}
+                </h2>
+
+                <p class="text-secondary">
+                    {{ subscription.description|default:"Описание пока не добавлено." }}
+                </p>
+
+                <div class="mt-3">
+                    <span
+                        class="h2"
+                    data-price-rub="{{ subscription.price }}">
+                    {{ subscription.price }}
+                    </span>
+                    <span class="text-secondary"> / месяц</span>
+                </div>
+                <button
+                    type="button"
+                    class="btn btn-primary w-100 mt-3 subscribe-btn"
+                    data-url="{% url 'subscribe' subscription.id %}">
+                    Подключить подписку
+                </button>
+                </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">
+            Каталог пока пуст. Добавь сервисы через административную панель.
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div id="catalog-no-results" class="alert alert-info d-none">
+    По твоему запросу ничего не найдено.
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const message = document.getElementById('catalog-message');
+
+    const searchInput = document.getElementById('catalog-search');
+    const catalogItems = document.querySelectorAll('.catalog-item');
+    const noResults = document.getElementById('catalog-no-results');
+
+    searchInput.addEventListener('input', function () {
+        const query = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        catalogItems.forEach(function (item) {
+            const text = item.dataset.search.toLowerCase();
+            const matches = text.includes(query);
+
+            item.classList.toggle('d-none', !matches);
+
+            if (matches) {
+                visibleCount++;
+            }
+        });
+
+        noResults.classList.toggle(
+            'd-none',
+            visibleCount > 0 || catalogItems.length === 0
+        );
+    });
+
+    document.querySelectorAll('.subscribe-btn').forEach(function (button) {
+        button.addEventListener('click', async function () {
+            const originalText = button.textContent.trim();
+
+            button.disabled = true;
+            button.textContent = 'Подключение...';
+
+            try {
+                const response = await fetch(button.dataset.url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    mode: 'same-origin'
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Не удалось подключить подписку.');
+                }
+
+                message.className = 'alert alert-success';
+                message.textContent = data.message;
+
+                button.textContent = 'Подписка подключена';
+                button.classList.remove('btn-primary');
+                button.classList.add('btn-success');
+            } catch (error) {
+                message.className = 'alert alert-danger';
+                message.textContent = error.message;
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        });
+    });
+
+    function getCookie(name) {
+        const cookies = document.cookie.split(';');
+
+        for (const cookie of cookies) {
+            const trimmed = cookie.trim();
+
+            if (trimmed.startsWith(name + '=')) {
+                return decodeURIComponent(
+                    trimmed.substring(name.length + 1)
+                );
+            }
+        }
+
+        return null;
+    }
+});
+</script>
+{% endblock %}

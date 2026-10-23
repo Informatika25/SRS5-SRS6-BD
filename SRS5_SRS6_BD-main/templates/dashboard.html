@@ -1,0 +1,78 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Аналитика — SubTrack{% endblock %}
+
+{% block content %}
+<div class="page-header mb-4">
+    <h1 class="page-title">Аналитика</h1>
+    <p class="text-secondary">
+        Обзор твоих расходов на подписки
+    </p>
+</div>
+
+<div class="row row-cards mb-4">
+    <div class="col-md-6 col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="subheader">Активные расходы в месяц</div>
+                <div class="h1 mb-0">
+                    <span data-price-rub="{{ total_expenses }}">
+                        {{ total_expenses|floatformat:2 }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="subheader">Активные подписки</div>
+                <div class="h1 mb-0">{{ active_count }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Расходы по категориям</h3>
+    </div>
+
+    <div class="card-body">
+        {% for category in category_stats %}
+            <div class="mb-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span>
+                        {{ category.subscription__category__name|default:"Без категории" }}
+                    </span>
+                    <strong data-price-rub="{{ category.total }}">
+                        {{ category.total|floatformat:2 }} ₽
+                    </strong>
+                </div>
+
+                <div class="progress">
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: {% widthratio category.total total_expenses 100 %}%"
+                        aria-valuenow="{% widthratio category.total total_expenses 100 %}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                    </div>
+                </div>
+
+                <small class="text-secondary">
+                    Подписок: {{ category.count }}
+                </small>
+            </div>
+        {% empty %}
+            <p class="text-secondary mb-0">
+                Пока нет активных подписок для аналитики.
+                Подключи подписки в каталоге, чтобы увидеть статистику.
+            </p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Главная — SubTrack{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Добро пожаловать в SubTrack</h1>
+    <p class="text-secondary">
+        Управляй подписками и контролируй регулярные расходы
+        в одном месте.
+    </p>
+</div>
+
+<div class="row row-cards">
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h3 class="card-title">Каталог подписок</h3>
+                <p class="text-secondary">
+                    Просматривай доступные сервисы и их стоимость.
+                </p>
+                <a href="/catalog/" class="btn btn-primary">
+                    Открыть каталог
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h3 class="card-title">Мои подписки</h3>
+                <p class="text-secondary">
+                    Управляй подключёнными сервисами и их статусами.
+                </p>
+                <a href="/my-subscriptions/" class="btn btn-primary">
+                    Мои подписки
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <h3 class="card-title">Аналитика</h3>
+                <p class="text-secondary">
+                    Следи за расходами на регулярные подписки.
+                </p>
+                <a href="/dashboard/" class="btn btn-primary">
+                    Посмотреть расходы
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
