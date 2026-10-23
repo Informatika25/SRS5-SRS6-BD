@@ -46,4 +46,16 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
                 })
             queryset = queryset.filter(price__lte=max_price)
 
-        return queryset.order_by('name')
+        # Сортировка (ordering)
+        ordering = self.request.query_params.get('ordering', 'name')
+        allowed_orderings = {
+            'name': 'name',
+            '-name': '-name',
+            'price': 'price',
+            '-price': '-price',
+            'id': 'id',
+            '-id': '-id',
+        }
+        order_by_field = allowed_orderings.get(ordering, 'name')
+
+        return queryset.order_by(order_by_field)

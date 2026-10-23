@@ -9,4 +9,5 @@ urlpatterns = [
     path('catalog/<int:subscription_id>/subscribe/',views.subscribe,name='subscribe'),
     path('my-subscriptions/<int:subscription_id>/cancel/',views.cancel_subscription,name='cancel_subscription'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('management/', views.subscription_management, name='subscription_management'),
 ]

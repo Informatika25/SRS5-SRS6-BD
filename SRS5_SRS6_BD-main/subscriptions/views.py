@@ -138,4 +138,5 @@ def dashboard(request):
     })
 
 def subscription_management(request):
-    return render(request, 'subscriptions/management.html')
+    return render(request, 'management.html')
+

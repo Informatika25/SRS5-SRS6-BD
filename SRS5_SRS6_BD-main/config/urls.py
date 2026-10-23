@@ -6,5 +6,4 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('subscriptions.urls')),
     path('api/', include('subscriptions.api_urls')),
-    path('management/', views.subscription_management,name='subscription_management'),
 ]

@@ -19,6 +19,7 @@
                 <a class="nav-link" href="/catalog/">Каталог</a>
                 <a class="nav-link" href="/my-subscriptions/">Мои подписки</a>
                 <a class="nav-link" href="/dashboard/">Аналитика</a>
+                <a class="nav-link" href="/management/">Управление</a>
 
                 <div class="navbar-actions d-flex align-items-center gap-2 ms-md-2">
                     <button
@@ -36,6 +37,22 @@
                         <option value="USD">$ USD</option>
                         <option value="EUR">€ EUR</option>
                     </select>
+
+                    {% if user.is_authenticated %}
+                        <span class="badge bg-blue-lt d-none d-md-inline-block">
+                            <i class="ti ti-user me-1"></i>{{ user.username }}{% if user.is_staff %} <span class="badge bg-green ms-1 text-white">Admin</span>{% endif %}
+                        </span>
+                        <form action="{% url 'logout' %}" method="post" class="d-inline m-0">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-sm" title="Выйти">
+                                <i class="ti ti-logout"></i>
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="/accounts/login/" class="btn btn-outline-primary btn-sm">
+                            <i class="ti ti-login me-1"></i>Войти
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
