@@ -224,7 +224,7 @@
     </div>
 </div>
 
-<!-- ================= МОДАЛЬНОЕ ОКНО СОЗДАНИЯ / РЕДАКТИРОВАНИЯ ================= -->
+<!-- модальное окно создания / редактирования  -->
 <div class="modal fade" id="subscriptionModal" tabindex="-1" aria-labelledby="subscriptionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -307,7 +307,7 @@
     </div>
 </div>
 
-<!-- ================= МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ (ОПАСНАЯ ОПЕРАЦИЯ) ================= -->
+<!-- модальное окно подтверждения удаления (опасная операция) -->
 <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -345,7 +345,7 @@
     </div>
 </div>
 
-<!-- ================= TOASTS (ВСПЛЫВАЮЩИЕ УВЕДОМЛЕНИЯ) ================= -->
+<!-- TOASTS (всплывающие уведомления) -->
 <div class="toast-container-custom">
     <div id="liveToast" class="toast align-items-center border-0 text-white" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
@@ -362,9 +362,7 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    // -------------------------------------------------------------
     // 1. Инициализация переменных и состояния
-    // -------------------------------------------------------------
     const csrfToken = document.getElementById('csrf-token-val').value;
     let categoriesList = [];
     let subscriptionsData = [];
@@ -421,9 +419,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const deleteSpinner = document.getElementById('delete-spinner');
     const deleteErrorAlert = document.getElementById('delete-error-alert');
 
-    // -------------------------------------------------------------
     // 2. Вспомогательные функции (Toast, Ошибки, Форматирование)
-    // -------------------------------------------------------------
     function showToast(message, type = 'success') {
         toastEl.className = 'toast align-items-center border-0 text-white bg-' + (type === 'success' ? 'success' : (type === 'danger' ? 'danger' : 'primary'));
         const icon = document.getElementById('toast-icon');
@@ -491,9 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // -------------------------------------------------------------
     // 3. Загрузка связанных данных: GET /api/categories/
-    // -------------------------------------------------------------
     async function loadCategories() {
         try {
             const response = await fetch('/api/categories/', {
@@ -530,9 +524,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // -------------------------------------------------------------
     // 4. Серверная фильтрация и получение списка: GET /api/subscriptions/
-    // -------------------------------------------------------------
     async function loadSubscriptions() {
         hideGlobalError();
         tableLoader.classList.remove('d-none');
@@ -679,9 +671,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .replace(/'/g, '&#039;');
     }
 
-    // -------------------------------------------------------------
     // 5. Создание и Редактирование: POST /api/subscriptions/ и PATCH /api/subscriptions/<id>/
-    // -------------------------------------------------------------
     function openCreateModal() {
         clearFormErrors();
         subForm.reset();
@@ -781,9 +771,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // -------------------------------------------------------------
     // 6. Подтверждение и выполнение опасной операции: DELETE /api/subscriptions/<id>/
-    // -------------------------------------------------------------
     function openDeleteModal(id, name) {
         pendingDeleteId = id;
         deleteItemNameEl.textContent = `«${name}»`;
@@ -838,9 +826,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // -------------------------------------------------------------
     // 7. Обработчики событий фильтров
-    // -------------------------------------------------------------
     // Живой поиск с debounce 350мс
     filterSearch.addEventListener('input', function () {
         clearTimeout(searchDebounceTimeout);
@@ -873,9 +859,7 @@ document.addEventListener('DOMContentLoaded', function () {
     btnRefreshTable.addEventListener('click', loadSubscriptions);
     document.getElementById('btn-open-create-modal').addEventListener('click', openCreateModal);
 
-    // -------------------------------------------------------------
     // 8. Первичная инициализация при загрузке страницы
-    // -------------------------------------------------------------
     async function init() {
         await loadCategories();
         await loadSubscriptions();
